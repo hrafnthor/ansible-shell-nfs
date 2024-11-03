@@ -1,0 +1,11 @@
+- name: Assert 'nfs_mount' variable exists
+  ansible.builtin.assert:
+    that:
+      - nfs_mount is mapping
+
+- name: Validate 'nfs_mount' schema
+  ansible.utils.validate:
+    data: "{{ nfs_mount }}"
+    criteria:
+      - "{{ lookup('file', 'assertions/criteria/nfs_mount_criteria.json') | from_json }}"
+    engine: ansible.utils.jsonschema
