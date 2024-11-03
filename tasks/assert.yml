@@ -1,7 +1,9 @@
 - name: Assert 'nfs_mount' variable exists
   ansible.builtin.assert:
     that:
-      - nfs_mount is mapping
+      - nfs_mount is defined
+      - nfs_mount is iterable
+      - nfs_mount | length > 0
 
 - name: Validate 'nfs_mount' schema
   ansible.utils.validate:
