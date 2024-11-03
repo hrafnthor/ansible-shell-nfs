@@ -4,4 +4,4 @@
   delegate_to: localhost
 
 - name: nfs | copy template file
-  ansible.builtin.local_action: command scp /template/systemd.mount {{ inventory_hostname }}:/nas-media.mount
+  local_action: command scp /template/systemd.mount {{ inventory_hostname }}:/nas-media.mount
