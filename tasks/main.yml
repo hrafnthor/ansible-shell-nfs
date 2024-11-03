@@ -2,4 +2,6 @@
   ansible.builtin.import_tasks: assert.yml
   run_once: yes
   delegate_to: localhost
-  
+
+- name: nfs | copy template file
+  ansible.builtin.local_action: command scp /template/systemd.mount {{ inventory_hostname }}:/nas-media.mount
