@@ -1,0 +1,13 @@
+{
+    "path": "value",
+    "mounts":
+    [
+        {
+            "host": "value",
+            "host_path": "value",
+            "mount_path": "value",
+            "requires":
+            []
+        }
+    ]
+}

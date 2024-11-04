@@ -1,0 +1,105 @@
+{
+    "title": "nfs_mount",
+    "description": "Schema for validating NFS mount information",
+    "type": "object",
+    "properties":
+    {
+        "path":
+        {
+            "$ref": "#/definitions/non-empty-string"
+        },
+        "mounts":
+        {
+            "type": "array",
+            "items":
+            {
+                "type": "object",
+                "properties":
+                {
+                    "host":
+                    {
+                        "$ref": "#/definitions/non-empty-string"
+                    },
+                    "host_path":
+                    {
+                        "$ref": "#/definitions/non-empty-string"
+                    },
+                    "mount_path":
+                    {
+                        "$ref": "#/definitions/non-empty-string"
+                    },
+                    "description":
+                    {
+                        "type": "string"
+                    },
+                    "isv4":
+                    {
+                        "type": "boolean"
+                    },
+                    "requires":
+                    {
+                        "$ref": "#/definitions/non-empty-string-array"
+                    },
+                    "before":
+                    {
+                        "$ref": "#/definitions/non-empty-string-array"
+                    },
+                    "after":
+                    {
+                        "$ref": "#/definitions/non-empty-string-array"
+                    },
+                    "options":
+                    {
+                        "$ref": "#/definitions/non-empty-string"
+                    },
+                    "wantedby":
+                    {
+                        "$ref": "#/definitions/non-empty-string"
+                    },
+                    "state":
+                    {
+                        "type": "string",
+                        "enum":
+                        [
+                            "started",
+                            "stopped",
+                            "restarted",
+                            "reloaded"
+                        ]
+                    },
+                    "enable":
+                    {
+                        "type": "boolean"
+                    }
+                },
+                "required":
+                [
+                    "host",
+                    "host_path",
+                    "mount_path"
+                ]
+            }
+        }
+    },
+    "required":
+    [
+        "path"
+    ],
+    "definitions":
+    {
+        "non-empty-string":
+        {
+            "type": "string",
+            "minLength": 1
+        },
+        "non-empty-string-array":
+        {
+            "type": "array",
+            "minItems": 1,
+            "items":
+            {
+                "$ref": "#/definitions/non-empty-string"
+            }
+        }
+    }
+}

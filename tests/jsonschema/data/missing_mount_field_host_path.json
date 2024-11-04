@@ -1,0 +1,10 @@
+{
+    "path": "value",
+    "mounts":
+    [
+        {
+            "host": "value",
+            "destination": "value"
+        }
+    ]
+}
