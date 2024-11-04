@@ -1,0 +1,110 @@
+# This file contains tasks related to mounting NFS paths.
+# It should be invoked with NFS mount objects as input
+
+- name: systemd | nfs | create mount path
+  ansible.builtin.file:
+    path: "{{ mount.mount_path }}"
+    state: directory
+    owner: root
+    group: root
+    modification_time: preserve
+    access_time: preserve
+    mode: '0755'
+
+# File name needs to mirror it's path but with dashes
+- name: systemd | nfs | set mount file name
+  ansible.builtin.set_fact:
+    mount_file_name: "{{ mount.mount_path.lstrip('/') | replace('/', '-') }}.mount"
+    cacheable: no
+
+- name: systemd | nfs | set mount file path
+  ansible.builtin.set_fact:
+    mount_file_path: "{{ nfs_mount.path }}/{{ mount_file_name }}"
+    cacheable: no
+
+- name: systemd | nfs | copy mount template
+  ansible.builtin.copy:
+    src: "templates/systemd.mount"
+    dest: "{{ mount_file_path }}"
+    owner: root
+    group: root
+    mode: 0644
+    force: no
+
+- name: systemd | nfs | set 'description' field
+  ansible.builtin.lineinfile: 
+    path: "{{ mount_file_path }}"
+    regexp: "^Description=" 
+    line: "Description={{ mount.description | default('') }}"
+    create: yes
+    mode: 0644
+
+- name: systemd | nfs | set 'requires' field
+  ansible.builtin.lineinfile: 
+    path: "{{ mount_file_path }}"
+    regexp: "^Requires=" 
+    line: "Requires={{ (mount.requires | default([])) | flatten | join(' ') }}"
+    create: yes
+    mode: 0644
+
+- name: systemd | nfs | set 'after' field
+  ansible.builtin.lineinfile: 
+    path: "{{ mount_file_path }}"
+    regexp: "^After=" 
+    line: "After={{ (mount.after | default([])) | flatten | join(' ') }}"
+    create: yes
+    mode: 0644
+
+- name: systemd | nfs | set 'before' field
+  ansible.builtin.lineinfile: 
+    path: "{{ mount_file_path }}"
+    regexp: "^Before=" 
+    line: "Before={{ (mount.before | default([])) | flatten | join(' ') }}"
+    create: yes
+    mode: 0644
+
+- name: systemd | nfs | set 'what' field
+  ansible.builtin.lineinfile: 
+    path: "{{ mount_file_path }}"
+    regexp: "^What=" 
+    line: "What={{ mount.host }}:{{ mount.host_path }}"
+    create: yes
+    mode: 0644
+
+- name: systemd | nfs | set 'where' field
+  ansible.builtin.lineinfile: 
+    path: "{{ mount_file_path }}"
+    regexp: "^Where=" 
+    line: "Where={{ mount.mount_path }}"
+    create: yes
+    mode: 0644
+
+- name: systemd | nfs | set 'options' field
+  ansible.builtin.lineinfile: 
+    path: "{{ mount_file_path }}"
+    regexp: "^Options=" 
+    line: "Options={{ mount.options | default('') }}"
+    create: yes
+    mode: 0644
+
+- name: systemd | nfs | set 'type' field
+  ansible.builtin.lineinfile: 
+    path: "{{ mount_file_path }}"
+    regexp: "^Type=" 
+    line: "Type={{ 'nfs4' if (mount.isv4 | default(false)) else 'nfs' }}"
+    create: yes
+    mode: 0644
+
+- name: systemd | nfs | set 'wantedby' field
+  ansible.builtin.lineinfile: 
+    path: "{{ mount_file_path }}"
+    regexp: "^WantedBy=" 
+    line: "WantedBy={{ mount.wantedby | default('mutli-user.target') }}"
+    create: yes
+    mode: 0644
+
+- name: systemd | nfs | start the mount
+  ansible.builtin.service:
+    name: "{{ mount_file_name }}"
+    state: "{{ mount.state | default('stopped') }}"
+    enabled: "{{ mount.enabled | default(false) }}"

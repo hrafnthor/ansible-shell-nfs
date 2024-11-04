@@ -1,0 +1,10 @@
+- name: Assert input correctness
+  ansible.builtin.import_tasks: assert.yml
+  run_once: yes
+  delegate_to: localhost
+
+- ansible.builtin.include_tasks: make_mounts.yml
+  loop: "{{ nfs_mount.mounts }}"
+  loop_control:
+    loop_var: mount
+  when: nfs_mount is defined

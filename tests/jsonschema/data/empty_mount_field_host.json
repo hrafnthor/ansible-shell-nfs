@@ -1,0 +1,11 @@
+{
+    "path": "value",
+    "mounts":
+    [
+        {
+            "host": "",
+            "host_path": "value",
+            "mount_path": "value"
+        }
+    ]
+}
