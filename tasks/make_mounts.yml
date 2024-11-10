@@ -104,7 +104,7 @@
     mode: 0644
 
 - name: systemd | nfs | start the mount
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: "{{ mount_file_name }}"
     state: "{{ mount.state | default('stopped') }}"
     enabled: "{{ mount.enabled | default(false) }}"
