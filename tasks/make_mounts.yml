@@ -99,7 +99,7 @@
   ansible.builtin.lineinfile: 
     path: "{{ mount_file_path }}"
     regexp: "^WantedBy=" 
-    line: "WantedBy={{ mount.wantedby | default('mutli-user.target') }}"
+    line: "WantedBy={{ mount.wantedby | default('') }}"
     create: yes
     mode: 0644
 
