@@ -3,6 +3,18 @@
   run_once: yes
   delegate_to: localhost
 
+
+- name: system | package | install packages
+  ansible.builtin.package:
+    state: latest
+    name: "{{ package }}"
+  loop: "{{ nfs_mount.packages }}"
+  loop_control:
+    loop_var: package
+  when:
+    - nfs_mount.packages is defined
+
+
 - ansible.builtin.include_tasks: make_mounts.yml
   loop: "{{ nfs_mount.mounts }}"
   loop_control:

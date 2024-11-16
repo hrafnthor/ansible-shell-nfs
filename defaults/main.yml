@@ -1,0 +1,2 @@
+# The default nfs support package to install onto the system
+systemd-nfs-support-package: nfs-common
