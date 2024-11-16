@@ -8,6 +8,10 @@
         {
             "$ref": "#/definitions/non-empty-string"
         },
+        "package":
+        {
+            "$ref": "#/definitions/non-empty-string"
+        },
         "mounts":
         {
             "type": "array",
