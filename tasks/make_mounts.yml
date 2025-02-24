@@ -5,8 +5,8 @@
   ansible.builtin.file:
     path: "{{ mount.mount_path }}"
     state: directory
-    owner: root
-    group: root
+    owner: nobody
+    group: nogroup
     modification_time: preserve
     access_time: preserve
     mode: '0755'
